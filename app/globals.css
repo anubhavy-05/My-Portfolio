@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0f0a0a;
+  --surface: #1a1010;
+  --accent: #e11d48;
+  --accent-soft: #fb7185;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --highlight: #fbbf24;
+  --border: #2d1515;
+}
+
+html {
+  background: var(--background);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: inherit;
+  background:
+    radial-gradient(circle at top, rgba(225, 29, 72, 0.18), transparent 28%),
+    radial-gradient(circle at 85% 15%, rgba(251, 113, 133, 0.12), transparent 24%),
+    linear-gradient(180deg, #120b0c 0%, #0f0a0a 38%, #0b0707 100%);
+}
+
+::selection {
+  background: rgba(225, 29, 72, 0.35);
+  color: #ffffff;
+}
+
+@layer components {
+  .glass-card {
+    @apply border border-border/70 bg-surface/80 backdrop-blur-xl;
+  }
+
+  .grid-line {
+    background-image: linear-gradient(rgba(45, 21, 21, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45, 21, 21, 0.5) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@layer utilities {
+  .rose-glow {
+    box-shadow: 0 0 40px rgba(225, 29, 72, 0.15);
+  }
+
+  .hero-rose-glow {
+    background: radial-gradient(circle, rgba(225, 29, 72, 0.22) 0%, rgba(225, 29, 72, 0.08) 35%, transparent 70%);
+    animation: hero-rose-pulse 8s ease-in-out infinite;
+  }
+
+  .rose-avatar-glow {
+    animation: rose-avatar-pulse 6s ease-in-out infinite;
+  }
+
+  .rose-ring {
+    box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.2), 0 0 30px rgba(225, 29, 72, 0.22);
+  }
+}
+
+@keyframes hero-rose-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.7;
+  }
+}
+
+@keyframes rose-avatar-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.25), 0 0 36px rgba(225, 29, 72, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.38), 0 0 52px rgba(225, 29, 72, 0.28);
+  }
+}
