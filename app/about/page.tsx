@@ -1,186 +1,246 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  BriefcaseBusiness,
-  GraduationCap,
-  Laptop,
-  MapPin,
-  Paintbrush2,
-  ServerCog,
-  Sparkles,
-  Zap
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { clsx } from "clsx";
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { staggerChildren: 0.12, delayChildren: 0.08 }
-  }
-} as const;
+import { 
+  FaRobot, 
+  FaBrain, 
+  FaServer, 
+  FaDatabase, 
+  FaGraduationCap, 
+  FaGithub,
+  FaLaptopCode,    // <-- Full Stack ke liye naya icon
+  FaNetworkWired   // <-- System Design ke liye naya icon
+} from "react-icons/fa";
+
+// --- Stat Counter Component ---
+function StatCounter({ value, label, prefix = "", suffix = "" }: { value: number; label: string, prefix?: string, suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (value === 0) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          let start = 0;
+          const duration = 1500;
+          const step = Math.max(1, Math.ceil(value / (duration / 16)));
+          
+          const timer = setInterval(() => {
+            start += step;
+            if (start >= value) {
+              setCount(value);
+              clearInterval(timer);
+            } else {
+              setCount(start);
+            }
+          }, 16);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <div ref={ref} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col items-center justify-center gap-1 transition-all duration-300 hover:border-yellow-500/30">
+      <span className="text-3xl font-bold text-yellow-500">
+        {prefix}{count}{suffix}
+      </span>
+      <span className="text-xs text-gray-500 text-center uppercase tracking-wider">{label}</span>
+    </div>
+  );
+}
+
+// --- Animation Variants ---
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0 }
-} as const;
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
-const quickFacts = [
+// --- Updated Services Data ---
+const services = [
   {
-    title: "B.Tech CSE Student",
-    Icon: GraduationCap,
-    copy: "Focused on computer science fundamentals and modern product engineering."
+    title: "Full Stack Development",
+    description: "Building end-to-end web applications with seamless user interfaces, robust backend logic, and smooth API integrations.",
+    Icon: FaLaptopCode
   },
   {
-    title: "Based in India",
-    Icon: MapPin,
-    copy: "Building for teams and clients who value polished execution and clear communication."
+    title: "System Designing",
+    description: "Architecting scalable, highly available, and distributed systems tailored for high performance and future growth.",
+    Icon: FaNetworkWired
   },
   {
-    title: "Open to Internships",
-    Icon: BriefcaseBusiness,
-    copy: "Looking for opportunities to contribute, learn fast, and ship production-ready work."
+    title: "Machine Learning & AI",
+    description: "Building predictive models, analyzing data trends, and integrating intelligent AI workflows into practical applications.",
+    Icon: FaBrain
   },
   {
-    title: "Love for Clean Code",
-    Icon: Sparkles,
-    copy: "Careful about structure, readability, and maintainable systems that scale well."
+    title: "Backend Engineering",
+    description: "Designing robust APIs, managing databases, and orchestrating scalable server-side architecture.",
+    Icon: FaServer
+  },
+  {
+    title: "Data Analytics",
+    description: "Transforming raw data into actionable insights through structured pipelines, cleaning, and visualization.",
+    Icon: FaDatabase
+  },
+  {
+    title: "Process Automation",
+    description: "Developing bots and scripts to streamline repetitive tasks and optimize operational efficiency.",
+    Icon: FaRobot
   }
 ];
 
-const specialties = [
+const educationData = [
   {
-    title: "Frontend Development",
-    Icon: Laptop,
-    copy: "Crafting responsive interfaces with strong hierarchy, smooth motion, and careful attention to detail."
+    degree: "B.Tech in Computer Science & Engineering",
+    school: "Babu Banarasi Das University (BBDU), Lucknow",
+    year: "Present",
+    highlight: true
   },
   {
-    title: "Backend Development",
-    Icon: ServerCog,
-    copy: "Designing dependable server logic, data flows, and APIs that can grow with the product."
+    degree: "12th Grade (Senior Secondary)",
+    school: "Children Senior Secondary School, Azamgarh",
+    year: "2022",
+    highlight: false
   },
   {
-    title: "UI/UX Design",
-    Icon: Paintbrush2,
-    copy: "Shaping clear visual systems and user flows that feel premium, simple, and intuitive."
+    degree: "10th Grade (High School)",
+    school: "Children Senior Secondary School, Azamgarh",
+    year: "2020",
+    highlight: false
   }
 ];
 
 export default function AboutPage() {
-  const prefersReducedMotion = useReducedMotion();
+  const [githubRepos, setGithubRepos] = useState(0);
+
+  // GitHub Repos Fetcher
+  useEffect(() => {
+    fetch("https://api.github.com/users/anubhavy-05")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.public_repos) {
+          setGithubRepos(data.public_repos);
+        }
+      })
+      .catch((err) => console.error("Error fetching GitHub data:", err));
+  }, []);
 
   return (
-    <main className="relative overflow-hidden bg-background px-6 py-20 sm:px-8 lg:px-12">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="hero-rose-glow absolute right-[-10%] top-[-12%] h-[22rem] w-[22rem] rounded-full opacity-40 blur-3xl" />
-      </div>
+    <main className="min-h-screen bg-black px-6 py-20 sm:px-8 lg:px-12 font-sans">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-4xl mx-auto flex flex-col gap-12"
+      >
+        {/* Header */}
+        <motion.div variants={itemVariants} className="text-center sm:text-left">
+          <p className="text-yellow-500 font-mono text-xs tracking-[0.2em] uppercase mb-2">Who I Am</p>
+          <h1 className="text-4xl font-bold text-white pb-2 md:text-5xl">About Me</h1>
+          <div className="mt-4 sm:hidden flex justify-center">
+            <span className="h-1 w-12 rounded-full bg-yellow-500" aria-hidden="true" />
+          </div>
+        </motion.div>
 
-      <div className="relative mx-auto max-w-7xl">
-        <motion.section
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.35 }}
-          variants={sectionVariants}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <motion.h1 variants={itemVariants} className="text-4xl font-bold tracking-tight text-white md:text-5xl">
-            About Me
-          </motion.h1>
-          <motion.div variants={itemVariants} className="mt-4 flex justify-center">
-            <span className="h-1 w-12 rounded-full bg-accent" aria-hidden="true" />
-          </motion.div>
-        </motion.section>
+        {/* Bio Section */}
+        <motion.div variants={itemVariants} className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 md:p-8 flex flex-col gap-4 shadow-xl">
+          <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+            I build systems that work — fast, reliable, and data-driven. Currently pursuing my B.Tech in Computer Science,i currently learning and exploring new technologies like system design and Full-Stack Development which i find fascinating and useful for my career. I specialize in Machine Learning, Data Analytics, and backend engineering. I focus on solving real-world problems through clean code rather than just decorating them.
+          </p>
+          <p className="text-gray-400 leading-relaxed text-sm md:text-base">
+            I'm obsessed with efficiency , building logics and data. Whether it's training predictive models for agricultural data, engineering scalable backend architecture, or integrating smart AI workflows, I care about performance, logic, and long-term maintainability. If something can be optimized or rebuilt smarter, I'll do it.
+          </p>
+        </motion.div>
 
-        <motion.section
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={sectionVariants}
-          className="mt-16 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"
-        >
-          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
-            <div className="rose-avatar-glow w-full max-w-sm rounded-[2rem] border border-accent/40 bg-surface p-4 shadow-rose -rotate-2 transition duration-300 hover:rotate-0">
-              <div className="overflow-hidden rounded-[1.5rem] border border-border bg-background">
-                <Image
-                  src="/avatar.jpg"
-                  alt="Anubhav Yadav portrait"
-                  width={720}
-                  height={900}
-                  className="h-full w-full object-cover"
-                  priority={false}
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h2 className="text-3xl font-semibold text-white md:text-4xl">Full Stack Developer building calm, scalable products.</h2>
-            <div className="space-y-4 text-base leading-8 text-muted md:text-lg">
-              <p>
-                I am a Full Stack Developer who enjoys turning ideas into clean, practical web experiences. I like working across the stack so I can shape both the interface and the systems behind it.
-              </p>
-              <p>
-                My focus is on building interfaces that feel polished, fast, and easy to use while keeping the codebase organized and maintainable. I care about small details that make a product feel intentional.
-              </p>
-              <p>
-                On the backend, I enjoy designing scalable APIs, reliable data flows, and solutions that support growth without adding unnecessary complexity.
-              </p>
-            </div>
-          </motion.div>
-        </motion.section>
-
-        <motion.section
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={sectionVariants}
-          className="mt-20"
-        >
-          <motion.h2 variants={itemVariants} className="text-2xl font-semibold text-white md:text-3xl">
-            Quick Facts
-          </motion.h2>
-
-          <motion.div variants={itemVariants} className="mt-8 grid gap-4 sm:grid-cols-2">
-            {quickFacts.map((fact) => (
-              <div
-                key={fact.title}
-                className="group rounded-3xl border border-border bg-surface p-5 transition duration-300 hover:shadow-rose"
+        {/* Education Timeline */}
+        <motion.div variants={itemVariants}>
+          <p className="text-yellow-500 font-mono text-xs tracking-[0.2em] uppercase mb-6">Education Journey</p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {educationData.map((edu, idx) => (
+              <div 
+                key={idx} 
+                className={clsx(
+                  "relative p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between gap-4",
+                  edu.highlight 
+                    ? "bg-zinc-900 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]" 
+                    : "bg-zinc-900/40 border-zinc-800 hover:border-zinc-600"
+                )}
               >
-                <fact.Icon className="h-6 w-6 text-accent transition duration-300 group-hover:scale-110" />
-                <h3 className="mt-4 text-lg font-semibold text-white">{fact.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-muted">{fact.copy}</p>
+                <div>
+                  <FaGraduationCap className={clsx("w-6 h-6 mb-3", edu.highlight ? "text-yellow-500" : "text-gray-500")} />
+                  <h3 className="text-white font-semibold text-sm mb-1">{edu.degree}</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">{edu.school}</p>
+                </div>
+                <div className="text-yellow-500/80 font-mono text-[10px] uppercase tracking-wider bg-yellow-500/10 self-start px-2 py-1 rounded-md">
+                  {edu.year}
+                </div>
               </div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </motion.div>
 
-        <motion.section
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={sectionVariants}
-          className="mt-20"
-        >
-          <motion.h2 variants={itemVariants} className="text-2xl font-semibold text-white md:text-3xl">
-            What I Do
-          </motion.h2>
-
-          <motion.div variants={itemVariants} className="mt-8 grid gap-4 lg:grid-cols-3">
-            {specialties.map((specialty) => (
-              <div
-                key={specialty.title}
-                className="rounded-3xl border border-border border-l-2 border-l-accent bg-surface p-6 transition duration-300 hover:shadow-rose"
-              >
-                <specialty.Icon className="h-6 w-6 text-accent" />
-                <h3 className="mt-4 text-xl font-semibold text-white">{specialty.title}</h3>
-                <p className="mt-3 max-w-md text-sm leading-7 text-muted">{specialty.copy}</p>
+        {/* What I'm Doing */}
+        <motion.div variants={itemVariants}>
+          <p className="text-yellow-500 font-mono text-xs tracking-[0.2em] uppercase mb-6">What I Focus On</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {services.map((service) => (
+              <div key={service.title} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex gap-4 hover:border-yellow-500/40 transition-colors group">
+                <div className="text-yellow-500 mt-0.5 group-hover:scale-110 transition-transform duration-300">
+                  <service.Icon size={24} />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm mb-1.5">{service.title}</p>
+                  <p className="text-gray-500 text-xs leading-relaxed">{service.description}</p>
+                </div>
               </div>
             ))}
-          </motion.div>
-        </motion.section>
-      </div>
+          </div>
+        </motion.div>
+
+        {/* Stat Counters */}
+        <motion.div variants={itemVariants}>
+          <p className="text-yellow-500 font-mono text-xs tracking-[0.2em] uppercase mb-6">By The Numbers</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <StatCounter value={10} label="Projects Built" suffix="+" />
+            <StatCounter value={githubRepos} label="GitHub Repos" />
+            <StatCounter value={15} label="Technologies" suffix="+" />
+            <StatCounter value={100} label="Commits/Month" suffix="+" />
+          </div>
+        </motion.div>
+
+        {/* GitHub Contributions Graph */}
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center gap-2 mb-6">
+            <FaGithub className="w-4 h-4 text-yellow-500" />
+            <p className="text-yellow-500 font-mono text-xs tracking-[0.2em] uppercase">Contributions</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 overflow-x-auto shadow-lg hover:border-yellow-500/30 transition-colors duration-300">
+            <div className="min-w-[700px]">
+              <img
+                src={`https://ghchart.rshah.org/eab308/anubhavy-05`}
+                alt="anubhavy-05 GitHub contributions"
+                className="w-full h-auto"
+                style={{ filter: 'brightness(1.1) contrast(1.1)' }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </main>
   );
 }
