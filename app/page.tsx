@@ -136,8 +136,8 @@ export default function Home() {
 
             <motion.div variants={fadeUp} transition={transition} className="mt-8 flex items-center gap-5">
               {[
-                { href: "#", label: "GitHub", Icon: FaGithub },
-                { href: "#", label: "LinkedIn", Icon: FaLinkedinIn },
+                { href: "https://github.com/anubhavy-05", label: "GitHub", Icon: FaGithub },
+                { href: "https://www.linkedin.com/in/anubhav-yadav-93bb83268", label: "LinkedIn", Icon: FaLinkedinIn },
                 { href: "#", label: "Twitter", Icon: FaTwitter }
               ].map(({ href, label, Icon }) => (
                 <a
