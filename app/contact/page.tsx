@@ -2,25 +2,25 @@
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Code2, Briefcase, Send, Mail, ArrowRight, Lightbulb, Clipboard, Cpu, Eye, Beaker, BookOpen, Bot, Sparkles, ShieldCheck, MapPin } from 'lucide-react'
+import { Code2, Briefcase, Send, Mail, ArrowRight, Lightbulb, Clipboard, Cpu, Eye, Beaker, BookOpen, Bot, Sparkles, ShieldCheck, MapPin, Clock } from 'lucide-react'
 import { clsx } from 'clsx'
-import ResumeSection from "@/components/ResumeSection" // Aapka Resume Section import
+import ResumeSection from "@/components/ResumeSection" 
 
 const workflowSteps = [
-  { Icon: Lightbulb, label: 'Idea' },
-  { Icon: Clipboard, label: 'Plan' },
-  { Icon: Cpu, label: 'AI Help' },
-  { Icon: Code2, label: 'Code' },
+  { Icon: Lightbulb, label: 'Ideate' },
+  { Icon: Clipboard, label: 'Architect' },
+  { Icon: Cpu, label: 'AI Integrate' },
+  { Icon: Code2, label: 'Develop' },
   { Icon: Eye, label: 'Review' },
   { Icon: Beaker, label: 'Test' },
-  { Icon: BookOpen, label: 'Learn' },
+  { Icon: BookOpen, label: 'Deploy' },
 ]
 
 const socials = [
-  { icon: Mail, label: 'Mail', href: `mailto:your.email@gmail.com`, color: 'hover:border-red-500/50 hover:text-red-400' },
-  { icon: Code2, label: 'GitHub', href: `https://github.com/anubhavy-05`, color: 'hover:border-white/30 hover:text-white' },
-  { icon: Briefcase, label: 'LinkedIn', href: `https://linkedin.com/in/yourhandle`, color: 'hover:border-blue-500/50 hover:text-blue-400' },
-  { icon: Send, label: 'Telegram', href: `https://t.me/yourtelegram`, color: 'hover:border-cyan-500/50 hover:text-cyan-400' },
+  { icon: Mail, label: 'Email', href: `mailto:abhi8400673@gmail.com`, color: 'hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400' },
+  { icon: Code2, label: 'GitHub', href: `https://github.com/anubhavy-05`, color: 'hover:border-white/30 hover:bg-white/10 hover:text-white' },
+  { icon: Briefcase, label: 'LinkedIn', href: `https://www.linkedin.com/in/anubhav-yadav-93bb83268`, color: 'hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400' },
+  { icon: Send, label: 'Telegram', href: `https://t.me/yourtelegram`, color: 'hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-400' },
 ]
 
 const containerVariants = {
@@ -30,7 +30,7 @@ const containerVariants = {
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
+} 
 
 type ContactForm = {
   name: string
@@ -40,19 +40,24 @@ type ContactForm = {
 }
 
 export default function ContactPage() {
-  const [form, setForm] = useState<ContactForm>({
-    name: '',
-    email: '',
-    message: '',
-    website: '',
-  })
+  const [form, setForm] = useState<ContactForm>({ name: '', email: '', message: '', website: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [submitSuccess, setSubmitSuccess] = useState('')
+  const [currentTime, setCurrentTime] = useState<string>('')
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  // Live Clock Widget Logic
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute:'2-digit' }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target
     setForm((prev) => ({ ...prev, [name]: value }))
   }
@@ -93,267 +98,188 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="relative overflow-hidden bg-black px-6 py-20 sm:px-8 lg:px-12 font-sans min-h-screen">
-      {/* Background Glow */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute right-[-10%] top-[-12%] h-[22rem] w-[22rem] rounded-full bg-cyan-500/20 opacity-40 blur-[100px]" />
-      </div>
+    <main className="relative min-h-screen bg-black px-6 py-24 sm:px-8 lg:px-12 font-sans overflow-hidden">
+      {/* Deep Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-cyan-600/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-5xl mx-auto flex flex-col gap-10 pt-4 relative z-10"
+        className="max-w-6xl mx-auto flex flex-col gap-12 relative z-10"
       >
-        {/* Header */}
-        <motion.div variants={itemVariants}>
-          <p className="text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase mb-2">
-            Contact · Workflow · Identity
-          </p>
-          <h1 className="text-4xl font-bold text-white pb-2 md:text-5xl">Reach Out</h1>
-        </motion.div>
-
-        {/* Intro */}
-        <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-            I&apos;m always open to interesting projects, collaborations, or just a good conversation about tech.
-            Whether you have a project in mind or just want to connect — hit me up.
-          </p>
-        </motion.div>
-
-        <motion.section
-          variants={itemVariants}
-          className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-zinc-900 via-black to-zinc-900/90 p-4 sm:p-6 shadow-2xl"
-        >
-          <div className="pointer-events-none absolute -top-10 -left-8 h-48 w-48 rounded-full bg-cyan-500/10 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-12 -right-10 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
-
-          <div className="relative grid gap-5 lg:grid-cols-2">
-            {/* Left: Info + Service Cards */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.45 }}
-              className="space-y-6"
-            >
-              <div>
-                <p className="mb-2 text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-400">Ping · Build · Ship</p>
-                <h2 className="text-2xl font-bold leading-tight text-white">
-                  Tell me what you want to build.
-                </h2>
-                <p className="mt-3 max-w-xl text-xs leading-relaxed text-gray-400">
-                  If you need a reliable backend, an AI-assisted tool, or a full-stack web app, send the brief here. I keep the conversation direct, technical, and focused on shipping something useful.
-                </p>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                <motion.div whileHover={{ y: -4 }} className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3 transition-colors hover:border-cyan-500/30">
-                  <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-cyan-500/30 bg-zinc-800 text-cyan-400">
-                    <Code2 size={14} />
-                  </div>
-                  <p className="text-base font-semibold text-gray-100">Full Stack</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-gray-500">End-to-end modern web applications.</p>
-                </motion.div>
-
-                <motion.div whileHover={{ y: -4 }} className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3 transition-colors hover:border-cyan-500/30">
-                  <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-cyan-500/30 bg-zinc-800 text-cyan-400">
-                    <Bot size={14} />
-                  </div>
-                  <p className="text-base font-semibold text-gray-100">Backend</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-gray-500">APIs, databases, auth, and logic.</p>
-                </motion.div>
-
-                <motion.div whileHover={{ y: -4 }} className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3 transition-colors hover:border-cyan-500/30">
-                  <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-cyan-500/30 bg-zinc-800 text-cyan-400">
-                    <Sparkles size={14} />
-                  </div>
-                  <p className="text-base font-semibold text-gray-100">AI & Data</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-gray-500">Practical ML models and analytics.</p>
-                </motion.div>
-              </div>
-
-              <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3">
-                  <p className="text-[9px] uppercase tracking-[0.25em] text-gray-500">Response</p>
-                  <p className="mt-1.5 text-sm font-semibold text-cyan-400">Usually within 24-48 hours</p>
-                </div>
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3">
-                  <p className="text-[9px] uppercase tracking-[0.25em] text-gray-500">Best fit</p>
-                  <p className="mt-1.5 text-sm font-semibold text-cyan-400">Full-stack & ML systems</p>
-                </div>
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3">
-                  <p className="text-[9px] uppercase tracking-[0.25em] text-gray-500">Location</p>
-                  <p className="mt-1.5 flex items-center gap-1.5 text-sm font-semibold text-cyan-400">
-                    <MapPin size={14} />
-                    Lucknow
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right: Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 }}
-              className="rounded-2xl border border-zinc-700/80 bg-zinc-900/80 p-6 backdrop-blur"
-            >
-              <div className="mb-6 flex items-start justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-gray-400">Send a message</p>
-                  <h3 className="mt-1 text-3xl font-semibold text-white">Contact form</h3>
-                </div>
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-500/30 bg-zinc-800 text-cyan-400">
-                  <ShieldCheck size={16} />
-                </div>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="space-y-1.5">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Your Name</span>
-                    <input
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      maxLength={80}
-                      required
-                      className="w-full rounded-2xl border border-zinc-700 bg-black px-4 py-2.5 text-sm text-gray-200 outline-none transition-all placeholder:text-zinc-600 focus:border-cyan-500/70 focus:ring-2 focus:ring-cyan-500/20"
-                      placeholder="Full name"
-                    />
-                  </label>
-
-                  <label className="space-y-1.5">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Email Address</span>
-                    <input
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      maxLength={120}
-                      required
-                      className="w-full rounded-2xl border border-zinc-700 bg-black px-4 py-2.5 text-sm text-gray-200 outline-none transition-all placeholder:text-zinc-600 focus:border-cyan-500/70 focus:ring-2 focus:ring-cyan-500/20"
-                      placeholder="you@example.com"
-                    />
-                  </label>
-                </div>
-
-                <label className="block space-y-1.5">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Your Message</span>
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    required
-                    minLength={10}
-                    maxLength={2500}
-                    rows={4}
-                    className="w-full resize-none rounded-2xl border border-zinc-700 bg-black px-4 py-3 text-sm text-gray-200 outline-none transition-all placeholder:text-zinc-600 focus:border-cyan-500/70 focus:ring-2 focus:ring-cyan-500/20"
-                    placeholder="Describe the project, timeline, and what outcome you want."
-                  />
-                </label>
-
-                <input name="website" value={form.website} onChange={handleChange} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
-
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  disabled={isSubmitting}
-                  className="w-full rounded-2xl bg-cyan-500 px-6 py-3 text-sm font-bold text-black transition-all hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2 mt-2"
-                >
-                  {isSubmitting ? 'Sending...' : 'Send message'}
-                  <ArrowRight size={16} />
-                </motion.button>
-                <div className="min-h-4 text-xs text-center">
-                  {submitError ? <p className="text-red-400">{submitError}</p> : null}
-                  {submitSuccess ? <p className="text-green-400">{submitSuccess}</p> : null}
-                </div>
-              </form>
-            </motion.div>
+        {/* --- Top Header Section with Live Status --- */}
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-800 pb-8">
+          <div>
+            <h1 className="text-5xl font-extrabold text-white tracking-tight mb-4">Let's Connect.</h1>
+            <p className="text-zinc-400 max-w-lg text-sm leading-relaxed">
+              Have a project idea, need a scalable backend, or want to integrate AI? Drop a message. I focus on writing clean code and building efficient systems.
+            </p>
           </div>
-        </motion.section>
-
-        {/* Workflow pipeline */}
-        <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 overflow-visible">
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-5">My Workflow</p>
-          <div className="md:hidden px-1 pb-2">
-            {/* Mobile layout remains same, just color updated */}
-            <div className="grid grid-cols-3 gap-y-8">
-              {workflowSteps.map((step, i) => {
-                const { Icon, label } = step
-                const row = Math.floor(i / 3)
-                const pos = i % 3
-                const col = row % 2 === 0 ? pos + 1 : 3 - pos
-                const hasNext = i < workflowSteps.length - 1
-                const nextRow = hasNext ? Math.floor((i + 1) / 3) : row
-                const nextPos = hasNext ? (i + 1) % 3 : pos
-                const nextCol = hasNext ? (nextRow % 2 === 0 ? nextPos + 1 : 3 - nextPos) : col
-                const sameRowConnection = hasNext && nextRow === row
-                const downConnection = hasNext && nextRow > row
-
-                return (
-                  <div key={label} className="relative flex justify-center" style={{ gridColumnStart: col, gridRowStart: row + 1 }}>
-                    <motion.div whileHover={{ scale: 1.08, y: -4 }} className="flex flex-col items-center gap-2 group">
-                      <div className="w-11 h-11 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-cyan-400 group-hover:border-cyan-500/50 group-hover:bg-zinc-700 transition-all">
-                        <Icon size={17} />
-                      </div>
-                      <span className="text-[9px] text-gray-500 uppercase tracking-widest group-hover:text-cyan-400 transition-colors whitespace-nowrap">
-                        {label}
-                      </span>
-                    </motion.div>
-                    {sameRowConnection && <div className="absolute top-[6px] h-px bg-zinc-700" style={{ left: nextCol > col ? '50%' : 'auto', right: nextCol > col ? 'auto' : '50%', width: '150%' }} />}
-                    {downConnection && <div className="absolute left-1/2 w-px -translate-x-1/2 bg-zinc-700" style={{ top: '62px', height: '28px' }} />}
-                  </div>
-                )
-              })}
+          
+          {/* New Feature: Live Status Badges */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800 px-4 py-2 rounded-full w-fit">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+              </span>
+              <span className="text-xs font-medium text-zinc-300">Available for Opportunities</span>
+            </div>
+            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800 px-4 py-2 rounded-full w-fit">
+              <Clock size={14} className="text-cyan-400" />
+              <span className="text-xs font-mono text-zinc-300">{currentTime || 'Loading...'} (IST)</span>
             </div>
           </div>
+        </motion.div>
 
-          {/* Desktop/Tablet horizontal pipeline */}
-          <div className="hidden md:flex items-center gap-0 overflow-x-auto overflow-y-visible pb-4 pt-6 px-2 -mx-2" style={{ scrollbarWidth: 'thin' }}>
-            {workflowSteps.map((step, i) => {
-              const { Icon, label } = step
-              return (
-                <div key={label} className="flex items-center shrink-0">
-                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, duration: 0.4 }} whileHover={{ scale: 1.1, y: -6 }} className="flex flex-col items-center gap-2 group">
-                    <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-cyan-400 group-hover:border-cyan-500/50 group-hover:bg-zinc-700 transition-all">
-                      <Icon size={18} />
-                    </div>
-                    <span className="text-[9px] text-gray-500 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">
-                      {label}
-                    </span>
-                  </motion.div>
-                  {i < workflowSteps.length - 1 && <div className="w-6 h-px bg-zinc-700 mx-1 shrink-0" />}
+        {/* --- Middle Section: Form (Left) & Bento Grid (Right) --- */}
+        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8">
+          
+          {/* Left: Contact Form (Redesigned Glassmorphism) */}
+          <motion.div variants={itemVariants} className="relative p-1 rounded-3xl bg-gradient-to-b from-zinc-800 to-transparent">
+            <div className="bg-black/80 backdrop-blur-xl h-full rounded-[23px] p-6 sm:p-8 border border-zinc-800/50">
+              <div className="flex items-center gap-3 mb-8">
+                <ShieldCheck className="text-cyan-400 h-6 w-6" />
+                <h3 className="text-xl font-semibold text-white">Direct Message</h3>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Name</label>
+                    <input
+                      name="name" value={form.name} onChange={handleChange} required
+                      className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white transition-all focus:border-cyan-500 focus:bg-zinc-900 focus:ring-1 focus:ring-cyan-500 outline-none"
+                      placeholder="Anubhav Yadav"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Email</label>
+                    <input
+                      name="email" type="email" value={form.email} onChange={handleChange} required
+                      className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white transition-all focus:border-cyan-500 focus:bg-zinc-900 focus:ring-1 focus:ring-cyan-500 outline-none"
+                      placeholder="you@example.com"
+                    />
+                  </div>
                 </div>
-              )
-            })}
+
+                <div className="space-y-2">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">Project Details</label>
+                  <textarea
+                    name="message" value={form.message} onChange={handleChange} required rows={5}
+                    className="w-full resize-none bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white transition-all focus:border-cyan-500 focus:bg-zinc-900 focus:ring-1 focus:ring-cyan-500 outline-none"
+                    placeholder="Tell me about your tech stack, timeline, or idea..."
+                  />
+                </div>
+
+                <input name="website" value={form.website} onChange={handleChange} className="hidden" aria-hidden="true" />
+
+                <button
+                  type="submit" disabled={isSubmitting}
+                  className="group w-full flex items-center justify-center gap-3 bg-cyan-500 text-black font-bold text-sm px-6 py-4 rounded-xl transition-all hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Transmitting...' : 'Send Message'}
+                  <Send size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </button>
+
+                <div className="text-center h-4 text-xs font-medium">
+                  {submitError && <span className="text-red-400">{submitError}</span>}
+                  {submitSuccess && <span className="text-green-400">{submitSuccess}</span>}
+                </div>
+              </form>
+            </div>
+          </motion.div>
+
+          {/* Right: Modern Bento Grid */}
+          <motion.div variants={itemVariants} className="flex flex-col gap-4">
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:border-cyan-500/30 transition-colors">
+              <div className="h-10 w-10 bg-cyan-500/10 text-cyan-400 flex items-center justify-center rounded-xl mb-4">
+                <Code2 size={20} />
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">Full Stack Engineering</h4>
+              <p className="text-sm text-zinc-400 leading-relaxed">Building scalable web apps from robust backend architectures to seamless frontend experiences using modern frameworks.</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:border-cyan-500/30 transition-colors">
+                <Bot className="text-cyan-400 mb-3" size={24} />
+                <h4 className="font-semibold text-white text-sm mb-1">Backend & APIs</h4>
+                <p className="text-xs text-zinc-500">Database & Logic</p>
+              </div>
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 hover:border-cyan-500/30 transition-colors">
+                <Sparkles className="text-cyan-400 mb-3" size={24} />
+                <h4 className="font-semibold text-white text-sm mb-1">Data & AI</h4>
+                <p className="text-xs text-zinc-500">ML Integrations</p>
+              </div>
+            </div>
+
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-zinc-800 flex items-center justify-center text-cyan-400 border border-zinc-700">
+                <MapPin size={20} />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-1">Base Location</p>
+                <p className="text-white font-medium">Azamgarh / Lucknow, India</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* --- New Linear Workflow Pipeline --- */}
+        <motion.div variants={itemVariants} className="mt-8">
+          <p className="text-xs font-bold text-cyan-500 uppercase tracking-[0.2em] mb-6 text-center">Development Process</p>
+          <div className="relative border border-zinc-800 bg-zinc-900/30 rounded-3xl p-8 overflow-hidden">
+            {/* Background Line */}
+            <div className="absolute top-1/2 left-10 right-10 h-[2px] bg-zinc-800 -translate-y-1/2 hidden md:block" />
+            
+            <div className="relative z-10 flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-6">
+              {workflowSteps.map((step, idx) => (
+                <div key={idx} className="flex flex-col items-center gap-3 group">
+                  <div className="h-12 w-12 rounded-2xl bg-black border border-zinc-700 flex items-center justify-center text-zinc-400 transition-all duration-300 group-hover:bg-cyan-500/10 group-hover:border-cyan-400 group-hover:text-cyan-400 group-hover:-translate-y-1 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+                    <step.Icon size={18} />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-wider font-semibold text-zinc-500 group-hover:text-cyan-400 transition-colors">
+                    {step.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
-        {/* Hit me up */}
-        <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-5">Hit Me Up</p>
-          <div className="flex flex-wrap gap-3">
-            {socials.map(({ icon: Icon, label, href, color }) => (
-              <a key={label} href={href || '#'} target="_blank" rel="noopener noreferrer" className={clsx('flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-gray-300 text-sm font-medium transition-all duration-200', color)}>
-                <Icon size={15} />
-                {label}
-                <ArrowRight size={12} className="opacity-50" />
-              </a>
-            ))}
-          </div>
+        {/* --- Floating Social Pills --- */}
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 py-8">
+          {socials.map((social) => (
+            <a 
+              key={social.label} 
+              href={social.href} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={clsx(
+                "flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-800 bg-zinc-900/50 text-sm font-medium text-zinc-300 transition-all duration-300",
+                social.color
+              )}
+            >
+              <social.icon size={16} />
+              {social.label}
+            </a>
+          ))}
         </motion.div>
 
-        {/* Aapka Resume Section */}
-        <ResumeSection />
+        {/* Resume Section Integration */}
+        <div className="mt-8">
+          <ResumeSection />
+        </div>
 
         {/* Footer */}
-        <motion.footer variants={itemVariants} className="text-center py-6 mt-4">
-          <p className="text-cyan-500/80 text-xs font-mono tracking-widest">
-            © 2026 Anubhav Yadav
+        <motion.footer variants={itemVariants} className="text-center pt-8 pb-4 border-t border-zinc-800/50">
+          <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">
+            © {new Date().getFullYear()} Anubhav Yadav 
           </p>
         </motion.footer>
+
       </motion.div>
     </main>
   )
