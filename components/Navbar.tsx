@@ -5,7 +5,7 @@ import type { Route } from "next";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Eye } from "lucide-react"; // Download ki jagah Eye icon laga diya
 
 export const NAVBAR_HEIGHT = 64;
 
@@ -14,7 +14,6 @@ type NavItem = {
   href: Route;
 };
 
-// Yahan maine 'Contact' ko wapas add kar diya hai!
 const navItems: NavItem[] = [
   { label: "Home", href: "/" as Route },
   { label: "About", href: "/about" as Route },
@@ -55,7 +54,6 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-zinc-800 bg-black/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         
-        {/* Logo */}
         <Link
           href="/"
           className="font-mono text-xl font-bold tracking-tight text-cyan-400 transition duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)]"
@@ -63,7 +61,6 @@ export default function Navbar() {
           AY
         </Link>
 
-        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {navItems.map((item) => {
             const active = isActive(item.href);
@@ -82,18 +79,18 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Desktop Resume Button */}
+        {/* Desktop View Resume Button */}
         <div className="hidden md:flex items-center">
           <a
             href="/Anubhav_Yadav_Resume.pdf"
-            download="Anubhav_Yadav_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-4 py-2 text-xs font-bold uppercase tracking-widest text-cyan-400 transition-all hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
           >
-            <Download size={14} /> Resume
+            <Eye size={14} /> View Resume
           </a>
         </div>
 
-        {/* Mobile Menu Icon */}
         <button
           type="button"
           onClick={() => setIsMenuOpen((value) => !value)}
@@ -103,7 +100,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isMenuOpen ? (
           <motion.div
@@ -131,14 +127,15 @@ export default function Navbar() {
                 );
               })}
               
-              {/* Mobile Resume Button */}
+              {/* Mobile View Resume Button */}
               <a
                 href="/Anubhav_Yadav_Resume.pdf"
-                download="Anubhav_Yadav_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsMenuOpen(false)}
                 className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-4 py-3 text-sm font-bold text-black transition-all hover:bg-cyan-400"
               >
-                <Download size={16} /> Download Resume
+                <Eye size={16} /> View Resume
               </a>
             </div>
           </motion.div>
