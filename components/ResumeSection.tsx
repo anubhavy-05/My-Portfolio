@@ -1,125 +1,67 @@
-'use client';
+"use client";
 
-import { motion, useInView } from 'framer-motion';
-import { FileText, Download, Calendar, Eye } from 'lucide-react';
-import { useRef } from 'react';
+import { motion } from "framer-motion";
+import { FileText, Download, Eye, Calendar } from "lucide-react";
 
 export default function ResumeSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-
   return (
-    <section
-      ref={ref}
-      style={{ backgroundColor: '#0F0A0A', borderTop: '1px solid #2D1515' }}
-      className="py-20 px-6"
-    >
+    <section className="flex flex-col items-center justify-center py-12">
+      {/* Header */}
+      <div className="text-center mb-8">
+        {/* Naya Cyan Color */}
+        <p className="text-cyan-400 font-mono text-sm mb-2 tracking-widest">my-resume</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Want to know more?</h2>
+        <p className="text-zinc-400 text-sm">Download my resume and see what I bring to the table.</p>
+      </div>
+
+      {/* Resume Card */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="max-w-2xl mx-auto text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 max-w-md w-full flex flex-col items-center mb-8 transition-colors hover:border-cyan-500/30 shadow-lg"
       >
-        {/* Top label */}
-        <p
-          className="text-sm mb-3 tracking-widest"
-          style={{ color: '#E11D48', fontFamily: 'Fira Code, monospace' }}
-        >
-          // my-resume.pdf
-        </p>
-
-        {/* Heading */}
-        <h2 className="text-3xl font-bold text-white mb-3">
-          Want to know more?
-        </h2>
-        <p style={{ color: '#94A3B8' }} className="text-base mb-10">
-          Download my resume and see what I bring to the table.
-        </p>
-
-        {/* Resume Card */}
-        <motion.div
-          whileHover={{
-            borderColor: '#E11D48',
-            boxShadow: '0 0 24px rgba(225,29,72,0.2)',
-          }}
-          transition={{ duration: 0.3 }}
-          className="max-w-sm mx-auto rounded-xl p-8 mb-8 cursor-default"
-          style={{
-            backgroundColor: '#1A1010',
-            border: '1px solid #2D1515',
-          }}
-        >
-          {/* File Icon */}
-          <div className="flex justify-center mb-4">
-            <div
-              className="w-16 h-16 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(225,29,72,0.1)', border: '1px solid #2D1515' }}
-            >
-              <FileText size={32} style={{ color: '#E11D48' }} />
-            </div>
-          </div>
-
-          {/* File name */}
-          <p
-            className="text-white text-sm font-medium mb-1"
-            style={{ fontFamily: 'Fira Code, monospace' }}
-          >
-            Anubhav_Yadav_Resume.pdf
-          </p>
-
-          {/* Last updated */}
-          <div
-            className="flex items-center justify-center gap-1.5 text-xs"
-            style={{ color: '#94A3B8' }}
-          >
-            <Calendar size={12} />
-            <span>Last updated: June 2025</span>
-          </div>
-        </motion.div>
-
-        {/* Buttons Row */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          {/* Download Button */}
-          <motion.a
-            href="/Anubhav_Yadav_Resume.pdf"
-            download="Anubhav_Yadav_Resume.pdf"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold text-white"
-            style={{ backgroundColor: '#E11D48' }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#BE123C')}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#E11D48')}
-          >
-            <Download size={18} />
-            Download Resume
-          </motion.a>
-
-          {/* View Button */}
-          <motion.a
-            href="/Anubhav_Yadav_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold"
-            style={{
-              border: '1px solid #E11D48',
-              color: '#E11D48',
-              backgroundColor: 'transparent',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.backgroundColor = 'rgba(225,29,72,0.1)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            <Eye size={18} />
-            View Online
-          </motion.a>
+        {/* Cyan Icon Box - Red hata kar Cyan kar diya */}
+        <div className="bg-cyan-500/10 p-4 rounded-2xl mb-4 border border-cyan-500/20">
+          <FileText className="h-10 w-10 text-cyan-400" />
         </div>
+        
+        <h3 className="text-white font-semibold text-lg mb-2 tracking-wide">Anubhav_Yadav_Resume.pdf</h3>
+        
+        <div className="flex items-center gap-2 text-zinc-500 text-xs uppercase tracking-wider font-medium">
+          <Calendar className="h-4 w-4" />
+          <span>Last updated: June 2026</span>
+        </div>
+      </motion.div>
+
+      {/* Buttons */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 }}
+        className="flex flex-col sm:flex-row gap-4 w-full max-w-md px-4 sm:px-0"
+      >
+        {/* Download Button - Solid Cyan */}
+        <a 
+          href="/Anubhav_Yadav_Resume.pdf" 
+          download="Anubhav_Yadav_Resume.pdf"
+          className="flex-1 flex items-center justify-center gap-2 bg-cyan-500 text-black font-bold py-3.5 px-6 rounded-xl transition-all duration-300 hover:bg-cyan-400 hover:scale-[1.02] shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+        >
+          <Download className="h-5 w-5" />
+          Download Resume
+        </a>
+        
+        {/* View Online Button - Transparent with Cyan Border & Text */}
+        <a 
+          href="/Anubhav_Yadav_Resume.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex-1 flex items-center justify-center gap-2 bg-transparent border border-cyan-500 text-cyan-400 font-bold py-3.5 px-6 rounded-xl transition-all duration-300 hover:bg-cyan-500/10 hover:scale-[1.02]"
+        >
+          <Eye className="h-5 w-5" />
+          View Online
+        </a>
       </motion.div>
     </section>
   );
