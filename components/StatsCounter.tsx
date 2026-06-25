@@ -1,94 +1,42 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
-type Stat = {
-  label: string;
-  value: number;
-  suffix?: string;
-};
-
-const stats: Stat[] = [
-  { label: "Projects Built", value: 10, suffix: "+" },
-  { label: "GitHub Repos", value: 20, suffix: "+" },
-  { label: "Certifications", value: 8, suffix: "+" },
-  { label: "Technologies", value: 15, suffix: "+" }
+const stats = [
+  { id: 1, value: "10+", label: "PROJECTS BUILT" },
+  { id: 2, value: "20+", label: "GITHUB REPOS" },
+  { id: 3, value: "8+", label: "CERTIFICATIONS" },
+  { id: 4, value: "15+", label: "TECHNOLOGIES" },
 ];
 
-function useCountUp(end: number, duration: number, inView: boolean) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!inView) {
-      setCount(0);
-      return;
-    }
-
-    let animationFrame = 0;
-    const startTime = performance.now();
-
-    const tick = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const nextCount = Math.round(eased * end);
-
-      setCount(nextCount);
-
-      if (progress < 1) {
-        animationFrame = window.requestAnimationFrame(tick);
-      }
-    };
-
-    animationFrame = window.requestAnimationFrame(tick);
-
-    return () => window.cancelAnimationFrame(animationFrame);
-  }, [duration, end, inView]);
-
-  return count;
-}
-
-function StatItem({ label, value, suffix, inView }: Stat & { inView: boolean }) {
-  const count = useCountUp(value, 2000, inView);
-
-  return (
-    <article className="flex flex-col items-center justify-center px-6 py-8 text-center md:px-8 lg:px-10">
-      <div className="font-mono text-5xl font-bold leading-none tracking-tight text-accent">
-        {count}
-        {suffix ?? ""}
-      </div>
-      <p className="mt-3 font-mono text-sm uppercase tracking-wider text-muted">{label}</p>
-    </article>
-  );
-}
-
 export default function StatsCounter() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.35 });
-
   return (
-    <motion.section
-      ref={sectionRef}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full border-y border-border bg-surface py-12"
-      aria-label="Portfolio statistics"
-    >
-      <div className="mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-4">
-        {stats.map((stat, index) => (
-          <div
-            key={stat.label}
-            className={[
-              "relative",
-              index < stats.length - 1 ? "md:after:absolute md:after:inset-y-6 md:after:right-0 md:after:w-px md:after:bg-border" : ""
-            ].join(" ")}
-          >
-            <StatItem {...stat} inView={isInView} />
-          </div>
-        ))}
+    <section className="border-t border-zinc-800/50 bg-black py-16 relative overflow-hidden">
+      {/* Subtle Cyan background glow for the stats section */}
+      <div className="absolute inset-0 bg-cyan-900/5 blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-2 gap-y-12 md:grid-cols-4 md:divide-x md:divide-zinc-800/60">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="flex flex-col items-center justify-center text-center group"
+            >
+              {/* Cyan Text with glowing drop-shadow on hover */}
+              <span className="text-5xl font-extrabold text-cyan-500 mb-3 transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,0.6)]">
+                {stat.value}
+              </span>
+              <span className="text-xs font-mono tracking-[0.2em] uppercase text-zinc-500 group-hover:text-cyan-400 transition-colors duration-300">
+                {stat.label}
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
