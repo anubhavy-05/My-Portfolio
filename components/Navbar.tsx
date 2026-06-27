@@ -5,7 +5,9 @@ import type { Route } from "next";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Eye } from "lucide-react"; // Download ki jagah Eye icon laga diya
+import { Menu, X, Eye, Briefcase, Terminal } from "lucide-react";
+// Naya Context import kiya
+import { useMode } from "@/context/ModeContext"; 
 
 export const NAVBAR_HEIGHT = 64;
 
@@ -43,6 +45,8 @@ const dropdownVariants = {
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Context se mode aur toggle function nikal liya
+  const { mode, toggleMode } = useMode(); 
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -54,6 +58,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-zinc-800 bg-black/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         
+        {/* Logo */}
         <Link
           href="/"
           className="font-mono text-xl font-bold tracking-tight text-cyan-400 transition duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)]"
@@ -61,6 +66,7 @@ export default function Navbar() {
           AY
         </Link>
 
+        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {navItems.map((item) => {
             const active = isActive(item.href);
@@ -79,8 +85,28 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Desktop View Resume Button */}
-        <div className="hidden md:flex items-center">
+        {/* Desktop Action Buttons (Toggle Mode + Resume) */}
+        <div className="hidden md:flex items-center gap-4">
+          
+          {/* VIBE SWITCHER BUTTON */}
+          <button
+            onClick={toggleMode}
+            className="group relative flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-400 transition-all hover:border-cyan-500/50 hover:text-cyan-400"
+            title="Switch Portfolio Mode"
+          >
+            {mode === "recruiter" ? (
+              <>
+                <Briefcase size={14} className="text-cyan-500" />
+                <span>Recruiter</span>
+              </>
+            ) : (
+              <>
+                <Terminal size={14} className="text-cyan-500" />
+                <span>Developer</span>
+              </>
+            )}
+          </button>
+
           <a
             href="/Anubhav_Yadav_Resume.pdf"
             target="_blank"
@@ -91,15 +117,28 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((value) => !value)}
-          className="inline-flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/50 p-2 text-white transition duration-300 hover:border-cyan-400/50 hover:text-cyan-400 md:hidden"
-        >
-          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile View Actions (Mode Icon + Hamburger) */}
+        <div className="flex items-center gap-3 md:hidden">
+          {/* Mobile Mode Toggle */}
+          <button
+            onClick={toggleMode}
+            className="flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/50 p-2 text-cyan-400 transition duration-300 hover:border-cyan-400/50"
+          >
+            {mode === "recruiter" ? <Briefcase size={16} /> : <Terminal size={16} />}
+          </button>
+
+          {/* Mobile Menu Icon */}
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((value) => !value)}
+            className="inline-flex items-center justify-center rounded-full border border-zinc-800 bg-zinc-900/50 p-2 text-white transition duration-300 hover:border-cyan-400/50 hover:text-cyan-400"
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isMenuOpen ? (
           <motion.div
@@ -127,7 +166,7 @@ export default function Navbar() {
                 );
               })}
               
-              {/* Mobile View Resume Button */}
+              {/* Mobile Resume Button */}
               <a
                 href="/Anubhav_Yadav_Resume.pdf"
                 target="_blank"
