@@ -9,8 +9,9 @@ import {
   SiPython, SiOpencv, SiPandas, SiNumpy, SiNextdotjs, SiReact, 
   SiTypescript, SiTailwindcss, SiFramer, SiDjango, SiPostgresql, 
   SiHtml5, SiGit, SiGithub, SiGooglecolab, SiJupyter, SiVercel, 
-  SiRender, SiVisualstudiocode, SiPostman 
+  SiRender, SiPostman 
 } from "react-icons/si";
+import { VscVscode } from "react-icons/vsc";
 import { FaBrain, FaNetworkWired, FaTree, FaChartPie, FaDatabase, FaServer, FaHandSparkles } from "react-icons/fa6";
 
 const skillCategories = [
@@ -61,7 +62,7 @@ const skillCategories = [
       { name: 'Jupyter', icon: SiJupyter },
       { name: 'Vercel', icon: SiVercel },
       { name: 'Render', icon: SiRender },
-      { name: 'VS Code', icon: SiVisualstudiocode },
+      { name: 'VS Code', icon: VscVscode },
       { name: 'Postman', icon: SiPostman },
     ],
   }
