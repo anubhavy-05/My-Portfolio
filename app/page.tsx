@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaLinkedinIn, FaEnvelope, FaTerminal } from "react-icons/fa6"; // Naye icons
@@ -140,12 +141,12 @@ export default function Home() {
 
             {/* Buttons (Same for both modes) */}
             <motion.div variants={fadeUp} transition={transition} className="mt-10 flex flex-wrap gap-4">
-              <a href="#work" className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-6 py-3 text-sm font-bold text-black transition duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+              <Link href="/projects" className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-6 py-3 text-sm font-bold text-black transition duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                 View My Work
-              </a>
-              <a href="mailto:abhi8400673@gmail.com" className="inline-flex items-center justify-center rounded-xl border border-cyan-500/50 px-6 py-3 text-sm font-bold text-cyan-400 transition duration-300 hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+              </Link>
+              <Link href="/contact" className="inline-flex items-center justify-center rounded-xl border border-cyan-500/50 px-6 py-3 text-sm font-bold text-cyan-400 transition duration-300 hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]">
                 Contact Me
-              </a>
+              </Link>
             </motion.div>
 
             {/* Social Icons */}
