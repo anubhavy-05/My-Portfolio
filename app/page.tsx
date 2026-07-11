@@ -7,6 +7,10 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaLinkedinIn, FaEnvelope, FaTerminal } from "react-icons/fa6"; // Naye icons
 import StatsCounter from "@/components/StatsCounter";
 import { useMode } from "@/context/ModeContext"; // Vibe Switcher ka brain import kiya
+// Yeh line add kijiye:
+import MLPlayground from "@/components/MLPlayground";
+
+
 
 const heroWords = ["Full Stack Developer", "System Designer", "Problem Solver"];
 
@@ -177,6 +181,12 @@ export default function Home() {
       </section>
 
       <StatsCounter />
+      
+      {/* 🚀 YAHAN PLAYGROUND ADD KIYA HAI 🚀 */}
+      <div className="relative z-10 px-6 sm:px-8">
+         <MLPlayground />
+      </div>
+
     </main>
   );
 }
