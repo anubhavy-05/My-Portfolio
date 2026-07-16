@@ -53,49 +53,49 @@ const credentials = [
     link: '#'
   },
   {
-    id: 6,
+    id: '6',
     title: "AI Skills Passport | Hindi",
     issuer: "EY & Microsoft",
     date: "July 09, 2026",
     image: "/certificate-6.jpg",
-    category: "AI & Tech",
-    tag: "sys.cert.microsoft_ey" // Developer mode ke liye
+    tags: ['AI', 'Microsoft', 'Hindi'],
+    link: '#'
   },
   {
-    id: 7,
+    id: '7',
     title: "100K Milestone Honor",
     issuer: "CampusCrew",
     date: "June 26, 2026",
     image: "/certificate-7.jpg",
-    category: "Community",
-    tag: "sys.cert.campus_crew"
+    tags: ['Community', 'Milestone'],
+    link: '#'
   },
   {
-    id: 8,
+    id: '8',
     title: "Internship Common Aptitude Test",
     issuer: "YCAT",
     date: "June 24, 2026",
     image: "/certificate-8.jpg",
-    category: "Assessment",
-    tag: "sys.cert.aptitude"
+    tags: ['Assessment', 'Aptitude'],
+    link: '#'
   },
   {
-    id: 9,
+    id: '9',
     title: "Generative AI Essentials",
     issuer: "TCS iON & MPIT",
     date: "July 16, 2026",
     image: "/certificate-9.jpg",
-    category: "AI & Tech",
-    tag: "sys.cert.gen_ai"
+    tags: ['AI', 'GenAI', 'TCS'],
+    link: '#'
   },
   {
-    id: 10,
+    id: '10',
     title: "AI & Cybersecurity Awareness",
     issuer: "TCS iON & MPIT",
     date: "July 16, 2026",
     image: "/certificate-10.jpg",
-    category: "Security",
-    tag: "sys.cert.cybersecurity"
+    tags: ['AI', 'Cybersecurity', 'TCS'],
+    link: '#'
   }
 ];
 
@@ -301,16 +301,23 @@ function MobileCard({ cred, index }: { cred: (typeof credentials)[0]; index: num
 /* ─── Page ──────────────────────────────────────────── */
 export default function CredentialsPage() {
   const [activeIssuer, setActiveIssuer] = useState('All')
-  
-  // NEW: Scroll Animation ref
-  const timelineRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
+
+  // Separate refs for desktop and mobile timelines
+  const desktopTimelineRef = useRef<HTMLDivElement>(null)
+  const mobileTimelineRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress: desktopScrollY } = useScroll({
+    target: desktopTimelineRef,
     offset: ["start center", "end center"]
   })
-  
-  // Spring physics for smooth glowing scroll line
-  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  const { scrollYProgress: mobileScrollY } = useScroll({
+    target: mobileTimelineRef,
+    offset: ["start center", "end center"]
+  })
+
+  // Spring physics for smooth glowing scroll lines
+  const scaleYDesktop = useSpring(desktopScrollY, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  const scaleYMobile = useSpring(mobileScrollY, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   const filtered = activeIssuer === 'All'
     ? credentials
@@ -384,7 +391,7 @@ export default function CredentialsPage() {
         </motion.div>
 
         {/* ── DESKTOP snake roadmap with NEW Glowing Scroll Spine ── */}
-        <div className="hidden md:block relative mt-12" ref={timelineRef}>
+        <div className="hidden md:block relative mt-12" ref={desktopTimelineRef}>
           {/* Base Dotted Spine */}
           <div
             className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-[2px]"
@@ -394,7 +401,7 @@ export default function CredentialsPage() {
           {/* NEW: Animated Glowing Scroll Spine */}
           <motion.div
             className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-[2px] bg-cyan-500 origin-top shadow-[0_0_15px_#06b6d4]"
-            style={{ scaleY }}
+            style={{ scaleY: scaleYDesktop }}
           />
 
           {/* Snake nodes */}
@@ -413,7 +420,7 @@ export default function CredentialsPage() {
         </div>
 
         {/* ── MOBILE timeline ── */}
-        <div className="md:hidden relative pl-2 mt-8 pb-12" ref={timelineRef}>
+        <div className="md:hidden relative pl-2 mt-8 pb-12" ref={mobileTimelineRef}>
           {/* Base Dotted Spine */}
           <div
             className="absolute left-[22px] top-4 bottom-0 w-[2px]"
@@ -423,7 +430,7 @@ export default function CredentialsPage() {
           {/* Animated Glowing Scroll Spine (Mobile) */}
           <motion.div
             className="absolute left-[22px] top-4 bottom-0 w-[2px] bg-cyan-500 origin-top shadow-[0_0_10px_#06b6d4]"
-            style={{ scaleY }}
+            style={{ scaleY: scaleYMobile }}
           />
 
           <div className="flex flex-col gap-8 pl-4 relative z-10">
