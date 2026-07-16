@@ -125,18 +125,18 @@ function FlipCard({ cred, index }: { cred: (typeof credentials)[0]; index: numbe
 
   return (
     <div ref={ref} className={clsx('flex items-center w-full gap-0 group', isLeft ? 'flex-row' : 'flex-row-reverse')}>
-      <div className="w-[calc(50%-28px)] flex justify-end relative">
+      <div className={clsx('w-[calc(50%-28px)] flex relative', isLeft ? 'justify-end' : 'justify-start')}>
         <motion.div
           initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
           animate={visible ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -60 : 60 }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-          className="w-full max-w-[280px]"
+          className="w-full max-w-[280px] relative"
           style={{ perspective: '1000px' }}
           onMouseEnter={() => setFlipped(true)}
           onMouseLeave={() => setFlipped(false)}
         >
           {/* Subtle connecting line glow on hover */}
-          <div className={clsx("absolute top-1/2 -translate-y-1/2 h-[2px] w-12 bg-cyan-500/0 group-hover:bg-cyan-500/50 transition-all duration-500 z-0", isLeft ? "-right-12" : "-left-12")} />
+          <div className={clsx("absolute top-1/2 -translate-y-1/2 h-[2px] w-12 bg-cyan-500/0 group-hover:bg-cyan-500/50 transition-all duration-500 z-20", isLeft ? "-right-12" : "-left-12")} />
 
           <motion.div
             animate={{ rotateY: flipped ? 180 : 0 }}
