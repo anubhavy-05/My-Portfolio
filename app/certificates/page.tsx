@@ -51,6 +51,51 @@ const credentials = [
     image: '/certificate-5.jpg',
     tags: ['Python', 'Assessment'],
     link: '#'
+  },
+  {
+    id: 6,
+    title: "AI Skills Passport | Hindi",
+    issuer: "EY & Microsoft",
+    date: "July 09, 2026",
+    image: "/certificate-6.jpg",
+    category: "AI & Tech",
+    tag: "sys.cert.microsoft_ey" // Developer mode ke liye
+  },
+  {
+    id: 7,
+    title: "100K Milestone Honor",
+    issuer: "CampusCrew",
+    date: "June 26, 2026",
+    image: "/certificate-7.jpg",
+    category: "Community",
+    tag: "sys.cert.campus_crew"
+  },
+  {
+    id: 8,
+    title: "Internship Common Aptitude Test",
+    issuer: "YCAT",
+    date: "June 24, 2026",
+    image: "/certificate-8.jpg",
+    category: "Assessment",
+    tag: "sys.cert.aptitude"
+  },
+  {
+    id: 9,
+    title: "Generative AI Essentials",
+    issuer: "TCS iON & MPIT",
+    date: "July 16, 2026",
+    image: "/certificate-9.jpg",
+    category: "AI & Tech",
+    tag: "sys.cert.gen_ai"
+  },
+  {
+    id: 10,
+    title: "AI & Cybersecurity Awareness",
+    issuer: "TCS iON & MPIT",
+    date: "July 16, 2026",
+    image: "/certificate-10.jpg",
+    category: "Security",
+    tag: "sys.cert.cybersecurity"
   }
 ];
 
