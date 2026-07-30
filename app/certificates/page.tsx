@@ -96,6 +96,15 @@ const credentials = [
     image: "/certificate-10.jpg",
     tags: ['AI', 'Cybersecurity', 'TCS'],
     link: '#'
+  },
+  {
+    id: '11',
+    title: "Certificate 11",
+    issuer: "Issuer",
+    date: "July 2026",
+    image: "/certificate-11.jpg",
+    tags: ['Achievement'],
+    link: '#'
   }
 ];
 
