@@ -30,7 +30,7 @@ export default function ResumeSection() {
         
         <div className="flex items-center gap-2 text-zinc-500 text-xs uppercase tracking-wider font-medium">
           <Calendar className="h-4 w-4" />
-          <span>Last updated: June 2026</span>
+          <span>Last updated: October 2026</span>
         </div>
       </motion.div>
 
